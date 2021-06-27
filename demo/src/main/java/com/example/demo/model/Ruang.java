@@ -11,31 +11,19 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "Jadwal")
-public class Jadwal {
+@Entity(name = "Ruang")
+public class Ruang {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "hari")
-    private Integer hari;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "jam")
-    private Integer jam;
-
-    @Column(name = "matpel")
-    private Integer matpel;
-
-    @Column(name = "guruPengajar")
-    private Long guruPengajar;
-
-    @Column(name = "kelas")
-    private Integer kelas;
-
-    @Column(name = "ruang")
-    private Integer ruang;
+    @Column(name = "nomor")
+    private Integer nomor;
 
     @JsonIgnore
     @Column(name = "createdAt")
