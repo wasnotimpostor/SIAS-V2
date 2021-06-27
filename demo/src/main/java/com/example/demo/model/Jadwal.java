@@ -19,6 +19,9 @@ public class Jadwal {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "hari")
+    private Integer hari;
+
     @Column(name = "jam")
     private Integer jam;
 
@@ -30,6 +33,9 @@ public class Jadwal {
 
     @Column(name = "kelas")
     private Integer kelas;
+
+    @Column(name = "ruang")
+    private Integer ruang;
 
     @JsonIgnore
     @Column(name = "createdAt")
