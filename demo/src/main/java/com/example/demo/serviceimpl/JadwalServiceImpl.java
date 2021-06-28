@@ -26,7 +26,7 @@ public class JadwalServiceImpl implements JadwalService {
     private EntityManager entityManager;
 
     @Override
-    public Page<dtoJadwal> getJadwalByPage(Integer id, Integer idHari, Pageable pageable) {
+    public Page<dtoJadwal> getJadwalByPage(Integer id, Integer idHari, Long guruPengajar, Pageable pageable) {
         String query = "select new com.example.demo.dto.dtoJadwal(j.id, h.name, ja.jam, mp.name, u.fullname, k.name, r.name) " +
                 "from Jadwal as j " +
                 "left join Hari as h on j.hari = h.id " +
@@ -49,6 +49,9 @@ public class JadwalServiceImpl implements JadwalService {
         StringBuilder stringBuilder = new StringBuilder();
         if (id > 0){
             stringBuilder.append(" and j.id = " + id);
+        }
+        if (guruPengajar > 0){
+            stringBuilder.append(" and j.guruPengajar = " + guruPengajar);
         }
 
         String counts = entityManager.createQuery(count + stringBuilder).getSingleResult().toString();
