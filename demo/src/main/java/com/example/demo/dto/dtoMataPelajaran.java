@@ -11,5 +11,6 @@ public class dtoMataPelajaran {
 
     private Integer id;
     private String name;
+    private String kode;
     private String fullname;
 }

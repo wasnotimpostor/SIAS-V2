@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MataPelajaranService {
-    Page<dtoMataPelajaran> getMatpelByPage(Integer id, String name, Long koordinator, Pageable pageable);
+    Page<dtoMataPelajaran> getMatpelByPage(Integer id, String matpel, Long koordinator, Pageable pageable);
     List<dtoMataPelajaran> getMatpelByList();
     MataPelajaran save(MataPelajaran mataPelajaran);
     MataPelajaran delete(Integer id);
     Optional<MataPelajaran> findById(Integer id);
+    Long count();
 }
