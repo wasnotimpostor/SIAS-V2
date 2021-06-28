@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -26,10 +28,12 @@ public class Roles {
     private RoleName name;
 
     @JsonIgnore
+    @CreationTimestamp
     @Column(name = "createdAt")
-    private Date createdAt;
+    protected Timestamp createdAt;
 
     @JsonIgnore
+    @CreationTimestamp
     @Column(name = "updatedAt")
-    private Date updatedAt;
+    protected Timestamp updatedAt;
 }
