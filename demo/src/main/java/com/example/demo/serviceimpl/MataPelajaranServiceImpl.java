@@ -26,8 +26,8 @@ public class MataPelajaranServiceImpl implements MataPelajaranService {
     private EntityManager entityManager;
 
     @Override
-    public Page<dtoMataPelajaran> getMatpelByPage(Integer id, String name, Long koordinator, Pageable pageable) {
-        String query = "select new com.example.demo.dto.dtoMataPelajaran(m.id, m.name, u.fullname) " +
+    public Page<dtoMataPelajaran> getMatpelByPage(Integer id, String matpel, Long koordinator, Pageable pageable) {
+        String query = "select new com.example.demo.dto.dtoMataPelajaran(m.id, m.name, m.kode, u.fullname) " +
                 "from MataPelajaran as m " +
                 "left join Users as u on m.koordinator = u.id ";
 
@@ -35,6 +35,15 @@ public class MataPelajaranServiceImpl implements MataPelajaranService {
                 "left join Users as u on m.koordinator = u.id ";
 
         StringBuilder stringBuilder = new StringBuilder();
+        if (id > 0){
+            stringBuilder.append(" and m.id = " + id);
+        }
+        if (koordinator > 0){
+            stringBuilder.append(" and m.koordinator = " + koordinator);
+        }
+        if (matpel != null) {
+            stringBuilder.append(" and m.name like '%" + matpel + "%'");
+        }
 
         String counts = entityManager.createQuery(count + stringBuilder).getSingleResult().toString();
         Integer inCount = Integer.parseInt(counts);
@@ -49,7 +58,7 @@ public class MataPelajaranServiceImpl implements MataPelajaranService {
 
     @Override
     public List<dtoMataPelajaran> getMatpelByList() {
-        String query = "select new com.example.demo.dto.dtoMataPelajaran(m.id, m.name, u.fullname) " +
+        String query = "select new com.example.demo.dto.dtoMataPelajaran(m.id, m.name, m.kode, u.fullname) " +
                 "from MataPelajaran as m " +
                 "left join Users as u on m.koordinator = u.id ";
         Query queries = entityManager.createQuery(query, dtoMataPelajaran.class);
@@ -72,5 +81,10 @@ public class MataPelajaranServiceImpl implements MataPelajaranService {
     @Override
     public Optional<MataPelajaran> findById(Integer id) {
         return mataPelajaranRepository.findById(id);
+    }
+
+    @Override
+    public Long count(){
+        return mataPelajaranRepository.count();
     }
 }
