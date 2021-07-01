@@ -27,6 +27,9 @@ public class Ruang {
     @Column(name = "nomor")
     private Integer nomor;
 
+    @Column(name = "floor")
+    private Integer floor;
+
     @JsonIgnore
     @CreationTimestamp
     @Column(name = "createdAt")
