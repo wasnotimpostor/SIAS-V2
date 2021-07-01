@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RuangService {
-    Page<dtoRuang> getRuangByPage(Integer id, String name, Integer nomor, Pageable pageable);
+    Page<dtoRuang> getRuangByPage(Integer id, String name, Integer nomor, Integer flor, Pageable pageable);
     List<dtoRuang> getRuangByList();
     Ruang save(Ruang ruang);
     Ruang delete(Integer id);
