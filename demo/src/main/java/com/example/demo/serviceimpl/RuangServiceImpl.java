@@ -26,8 +26,8 @@ public class RuangServiceImpl implements RuangService {
     private EntityManager entityManager;
 
     @Override
-    public Page<dtoRuang> getRuangByPage(Integer id, String name, Integer nomor, Pageable pageable) {
-        String query = "select new com.example.demo.dto.dtoRuang(r.id, r.name, r.nomor) " +
+    public Page<dtoRuang> getRuangByPage(Integer id, String name, Integer nomor, Integer floor, Pageable pageable) {
+        String query = "select new com.example.demo.dto.dtoRuang(r.id, r.name, r.nomor, r.floor) " +
                 "from Ruang as r ";
 
         String count = "select count(r.id) from Ruang as r ";
@@ -46,7 +46,7 @@ public class RuangServiceImpl implements RuangService {
 
     @Override
     public List<dtoRuang> getRuangByList() {
-        String query = "select new com.example.demo.dto.dtoRuang(r.id, r.name, r.nomor) " +
+        String query = "select new com.example.demo.dto.dtoRuang(r.id, r.name, r.nomor, r.floor) " +
                 "from Ruang as r ";
         Query queries = entityManager.createQuery(query, dtoRuang.class);
         List<dtoRuang> list = queries.getResultList();

@@ -14,8 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,7 +57,11 @@ public class MataPelajaranController {
 
         try {
             List<dtoMataPelajaran> list = mataPelajaranService.getMatpelByList();
-            response = Functions.response("success", "Get Mata Pelajaran Success", list);
+            if (list.size() > 0){
+                response = Functions.response("success", "Get Mata Pelajaran Success", list);
+            } else {
+                response = Functions.response("failed", "Data is Empty", list);
+            }
         } catch (Exception e){
             e.printStackTrace();
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

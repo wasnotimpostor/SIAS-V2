@@ -56,7 +56,11 @@ public class JadwalController {
         Map<String, Object> response;
         try {
             List<dtoJadwal> jadwalList = jadwalService.getJadwalByList();
-            response = Functions.response("success", "Get Jadwal Success", jadwalList);
+            if (jadwalList.size() > 0){
+                response = Functions.response("success", "Get Jadwal Success", jadwalList);
+            } else {
+                response = Functions.response("failed", "Data is Empty", jadwalList);
+            }
         } catch (Exception e){
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -95,7 +99,7 @@ public class JadwalController {
             if (!jadwal.isPresent()){
                 response = Functions.error(404, "Jadwal Not Found", "Error Get Data");
             } else {
-                response = Functions.response("success", "Get Data Success", jadwal.get());
+                response = Functions.response("success", "Get Data Success", jadwal);
             }
         } catch (Exception e){
             e.printStackTrace();
