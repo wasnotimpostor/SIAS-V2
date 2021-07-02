@@ -36,9 +36,6 @@ public class Jadwal {
     @Column(name = "kelas")
     private Integer kelas;
 
-    @Column(name = "ruang")
-    private Integer ruang;
-
     @JsonIgnore
     @CreationTimestamp
     @Column(name = "createdAt")
