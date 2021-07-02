@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Page<dtoUser> getUserByPage(Long id, Integer status, Pageable pageable);
+    Page<dtoUser> getUserByPage(Long id, String username, Integer status, Pageable pageable);
     List<dtoUser> getUserByList();
     Users save(Users users);
     Users delete(Long id);
     Optional<Users> findById(Long id);
+    Users getUserByUsername(String username);
 }

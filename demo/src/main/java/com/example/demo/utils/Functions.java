@@ -33,6 +33,17 @@ public class Functions {
         return ret;
     }
 
+    public static Map<String, Object> responseChangePass(Object data,String errMsg)
+    {
+        Map<Object, Object> error = new HashMap<>();
+        error.put(data, errMsg);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("errors", error);
+
+        return response;
+    }
+
     public static Map<String, Object> error(Integer errCd, String errMsg, String msg)
     {
         Map<String, Object> error = new HashMap<>();

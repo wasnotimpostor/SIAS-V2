@@ -12,8 +12,7 @@ public class dtoUser {
     private Long id;
     private String username;
     private String email;
-    private String firstname;
-    private String lastname;
+    private String fullname;
     private Integer gender;
     private Integer status;
 }

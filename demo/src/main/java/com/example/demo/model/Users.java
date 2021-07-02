@@ -48,6 +48,13 @@ public class Users {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
+    // berlaku untuk user status 6
+    @Column(name = "idKelas")
+    private Integer idKelas;
+
+    @Column(name = "nimOrNik")
+    private String nimOrNik;
+
     @JsonIgnore
     @CreationTimestamp
     @Column(name = "createdAt")

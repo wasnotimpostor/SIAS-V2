@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
     private EntityManager entityManager;
 
     @Override
-    public Page<dtoUser> getUserByPage(Long id, Integer status, Pageable pageable){
-        String query = "select new com.example.demo.dto.dtoUser(u.id, u.username, u.email, u.firstname, u.lastname, u.gender, u.status) " +
+    public Page<dtoUser> getUserByPage(Long id, String username, Integer status, Pageable pageable){
+        String query = "select new com.example.demo.dto.dtoUser(u.id, u.username, u.email, u.fullname, u.gender, u.status) " +
                 "from Users as u " +
                 "where u.status = "+status;
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<dtoUser> getUserByList() {
-        String query = "select new com.example.demo.dto.dtoUser(u.id, u.username, u.email, u.firstname, u.lastname, u.gender, u.status) from Users as u ";
+        String query = "select new com.example.demo.dto.dtoUser(u.id, u.username, u.email, u.fullname, u.gender, u.status) from Users as u ";
         Query queries = entityManager.createQuery(query, dtoUser.class);
         List<dtoUser> list = queries.getResultList();
         return list;
@@ -70,5 +70,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<Users> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public Users getUserByUsername(String username){
+        return userRepository.getUserByUsername(username);
     }
 }

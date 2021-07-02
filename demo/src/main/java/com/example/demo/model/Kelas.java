@@ -24,8 +24,9 @@ public class Kelas {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "waliKelas")
-    private Long waliKelas;
+    // bisa walikelas atau murid
+    @Column(name = "users")
+    private Long users;
 
     @Column(name = "ruang")
     private Integer ruang;
