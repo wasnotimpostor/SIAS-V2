@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -64,4 +66,22 @@ public class Users {
     @CreationTimestamp
     @Column(name = "updatedAt")
     protected Timestamp updatedAt;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private Set<Roles> roles = new HashSet<>();
+
+    public Users(String username, String email, String password, String fullname, Integer gender, Integer status, String address, String phoneNumber, String nimOrNik) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.fullname = fullname;
+        this.gender = gender;
+        this.status = status;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.nimOrNik = nimOrNik;
+    }
 }
