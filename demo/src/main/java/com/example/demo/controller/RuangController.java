@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(path = "sias", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/sias", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RuangController {
 
     @Autowired
