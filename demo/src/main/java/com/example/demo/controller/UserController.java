@@ -75,25 +75,6 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/user/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> createUser(){
-        Map<String, Object> response;
-
-        try {
-            Users users = new Users();
-            if (users == null){
-                response = Functions.error(500, "No Data Saved", "Process Failed");
-            } else {
-                Users save = userService.save(users);
-                response = Functions.response("success", "Data Saved Successfully", save);
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> getUserById(@PathVariable Long id){
         Map<String, Object> response;
