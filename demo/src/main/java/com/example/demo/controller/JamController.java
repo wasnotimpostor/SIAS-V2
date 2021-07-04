@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.dtoKelas;
-import com.example.demo.model.Kelas;
-import com.example.demo.service.KelasService;
+import com.example.demo.dto.dtoJam;
+import com.example.demo.model.Jam;
+import com.example.demo.service.JamService;
 import com.example.demo.utils.Functions;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,29 +21,28 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/sias", produces = MediaType.APPLICATION_JSON_VALUE)
-public class KelasController {
+public class JamController {
 
     @Autowired
-    private KelasService kelasService;
+    private JamService jamService;
 
-    @PostMapping(value = "/kelas", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getKelasByPage(@RequestBody String param){
-        JSONObject jsonObject = new JSONObject(param);
+    @PostMapping(value = "/jam", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> getJamByPage(@RequestBody String param){
         Map<String, Object> response;
+        JSONObject jsonObject = new JSONObject(param);
 
         try {
             Integer page = jsonObject.optInt("page", 0);
             if (page > 0) page--;
             Integer per_page = jsonObject.optInt("per_page", 10);
             Integer id = jsonObject.optInt("id", 0);
-            String namaKelas = jsonObject.optString("namaKelas");
-            Integer lantai = jsonObject.optInt("lantai");
+            String jam = jsonObject.optString("jam");
 
             Pageable pageable = PageRequest.of(page, per_page);
-            Page<dtoKelas> kelasPage = kelasService.getKelasByPage(id, namaKelas, lantai, pageable);
-            List<dtoKelas> kelasList = kelasPage.getContent();
+            Page<dtoJam> dtoJams = jamService.getJamByPage(id, jam, pageable);
+            List<dtoJam> list = dtoJams.getContent();
 
-            response = Functions.page("success", kelasPage.getTotalElements(), kelasPage.getTotalPages(), per_page, page++, kelasList);
+            response = Functions.page("success", dtoJams.getTotalElements(), dtoJams.getTotalPages(), per_page, page++, list);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -51,16 +50,16 @@ public class KelasController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/kelas/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getKelasByList(){
+    @GetMapping(value = "/jam/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> getJamByList(){
         Map<String, Object> response;
 
         try {
-            List<dtoKelas> list = kelasService.getKelasByList();
+            List<dtoJam> list = jamService.getJamByList();
             if (list.size() > 0){
-                response = Functions.response("success", "Get Kelas Success", list);
+                response = Functions.response("success", "Get Jam Success", list);
             } else {
-                response = Functions.response("failed", "Data is Empty", list);
+                response = Functions.response("failed", "Get Jam Failed", list);
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -69,16 +68,16 @@ public class KelasController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = "kelas/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> createKelas(){
+    @PostMapping(value = "/jam/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> createJam(){
         Map<String, Object> response;
 
         try {
-            Kelas kelas = new Kelas();
-            if (kelas == null){
+            Jam jam = new Jam();
+            if (jam == null){
                 response = Functions.error(500, "No Data Saved", "Process Failed");
             } else {
-                Kelas save = kelasService.save(kelas);
+                Jam save = jamService.save(jam);
                 response = Functions.response("success", "Data Saved Successfully", save);
             }
         } catch (Exception e){
@@ -88,8 +87,8 @@ public class KelasController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/kelas/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getKelasById(@PathVariable Integer id){
+    @GetMapping(value = "/jam/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> getJamById(@PathVariable Integer id){
         Map<String, Object> response;
 
         try {
@@ -97,11 +96,11 @@ public class KelasController {
                 response = Functions.error(400, "Bad Parameters", "Error Get Data");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            Optional<Kelas> kelas = kelasService.findById(id);
-            if (!kelas.isPresent()){
-                response = Functions.error(404, "Kelas Not Found", "Error Get Data");
+            Optional<Jam> jam = jamService.findById(id);
+            if (!jam.isPresent()){
+                response = Functions.error(404, "Jam Not Found", "Error Get Data");
             } else {
-                response = Functions.response("success", "Get Data Success", kelas);
+                response = Functions.response("success", "Get Data Success", jam);
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -110,8 +109,8 @@ public class KelasController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/kelas/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> deleteKelasById(@PathVariable Integer id){
+    @PostMapping(value = "/jam/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> updateJamById(@PathVariable Integer id){
         Map<String, Object> response;
 
         try {
@@ -119,36 +118,35 @@ public class KelasController {
                 response = Functions.error(400, "Bad Parameters", "Process Failed");
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
-            Optional<Kelas> kelas = kelasService.findById(id);
-            if (!kelas.isPresent()){
-                response = Functions.error(404, "Kelas Not Found", "Process Failed");
-            } else {
-                kelasService.delete(id);
-                response = Functions.response("success", "Success Delete User", "Process Success");
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/kelas/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> updateKelasById(@PathVariable Integer id){
-        Map<String, Object> response;
-
-        try {
-            if (id <= 0){
-                response = Functions.error(400, "Bad Parameters", "Process Failed");
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }
-            Optional<Kelas> exist = kelasService.findById(id);
+            Optional<Jam> exist = jamService.findById(id);
             if (!exist.isPresent()){
-                response = Functions.error(404, "Kelas Not Found", "Process Failed");
+                response = Functions.error(404, "Jam Not Found", "Process Failed");
             } else {
-                Kelas kelas = new Kelas();
-                Kelas updateKelas = kelasService.save(kelas);
-                response = Functions.response("success", "Update Data Success", updateKelas);
+                Jam jam = new Jam();
+                Jam updateJam = jamService.save(jam);
+                response = Functions.response("success", "Update Data Success", updateJam);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/jam/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> deleteJamById(@PathVariable Integer id){
+        Map<String, Object> response;
+
+        try {
+            if (id <= 0){
+                response = Functions.error(400, "Bad Parameters", "Process Failed");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            Optional<Jam> jam = jamService.findById(id);
+            if (!jam.isPresent()){
+                response = Functions.error(404, "Jam Not Found", "Process Failed");
+            } else {
+                response = Functions.response("success", "Success Delete Jam", "Process Success");
             }
         } catch (Exception e){
             e.printStackTrace();

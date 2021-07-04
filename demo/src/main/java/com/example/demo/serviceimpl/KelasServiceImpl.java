@@ -19,9 +19,6 @@ import java.util.Optional;
 @Service
 public class KelasServiceImpl implements KelasService {
 
-    @Autowired
-    private KelasRepository kelasRepository;
-
     @PersistenceContext
     private EntityManager entityManager;
 
