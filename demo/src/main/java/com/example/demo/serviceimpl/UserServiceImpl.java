@@ -33,8 +33,13 @@ public class UserServiceImpl implements UserService {
 
         String count = "select count(u.id) from Users as u where u.status = "+status;
 
-
         StringBuilder stringBuilder = new StringBuilder();
+        if (id > 0){
+            stringBuilder.append(" and u.id = "+ id);
+        }
+        if (username != null){
+            stringBuilder.append(" and u.username like '%"+username+"%'");
+        }
 
         String counts = entityManager.createQuery(count + stringBuilder).getSingleResult().toString();
         Integer inCount = Integer.parseInt(counts);
