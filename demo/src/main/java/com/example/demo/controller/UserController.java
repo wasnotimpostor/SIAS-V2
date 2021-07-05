@@ -75,6 +75,32 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    Users parseJson(Long id, JSONObject jsonObject){
+        String username = jsonObject.optString("username");
+        String email = jsonObject.optString("email");
+        String password = jsonObject.optString("password");
+        String fullname = jsonObject.optString("fullname");
+        Integer gender = jsonObject.optInt("gender");
+        Integer status = jsonObject.optInt("status");
+        String address = jsonObject.optString("address");
+        String phoneNumber = jsonObject.optString("phoneNumber");
+        Integer idKelas = jsonObject.optInt("idKelas");
+        String nimOrNik = jsonObject.optString("nimOrNik");
+
+        Users users;
+        if (id == 0){
+            users = new Users(null, username, email, password, fullname, gender, status, address, phoneNumber, idKelas, nimOrNik, Functions.getTimeStamp(), Functions.getTimeStamp(), null);
+        } else {
+            Optional<Users> exist = userService.findById(id);
+            if (exist.isPresent()){
+                users = new Users(id, username, email, password, fullname, gender, status, address, phoneNumber, idKelas, nimOrNik, Functions.getTimeStamp(), Functions.getTimeStamp(), exist.get().getRoles());
+            } else {
+                return null;
+            }
+        }
+        return users;
+    }
+
     @GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> getUserById(@PathVariable Long id){
         Map<String, Object> response;
@@ -121,19 +147,20 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> updateUserById(@PathVariable Long id){
+    public ResponseEntity<Map<String, Object>> updateUserById(@PathVariable Long id, @RequestBody String param){
         Map<String, Object> response;
+        JSONObject jsonObject = new JSONObject(param);
+
+        if (id <= 0){
+            response = Functions.error(400, "Bad Parameters", "Process Failed");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
 
         try {
-            if (id <= 0){
-                response = Functions.error(400, "Bad Parameters", "Process Failed");
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }
-            Optional<Users> exist = userService.findById(id);
-            if (!exist.isPresent()){
+            Users users = parseJson(id, jsonObject);
+            if (users == null){
                 response = Functions.error(404, "User Not Found", "Process Failed");
             } else {
-                Users users = new Users();
                 Users updateUser = userService.save(users);
                 response = Functions.response("success", "Update Data Success", updateUser);
             }
